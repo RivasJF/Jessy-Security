@@ -1,0 +1,13 @@
+package dev.rivasjf.digitalbrain;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DigitalBrainApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DigitalBrainApplication.class, args);
+    }
+
+}
