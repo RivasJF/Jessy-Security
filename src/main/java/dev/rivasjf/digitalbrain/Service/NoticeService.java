@@ -25,19 +25,21 @@ public class NoticeService {
         noticeRepository.save(notice);
         return NoticeMapper.toDto(notice);
     }
-    public NoticeResponse findById(Long id) {
+
+    public NoticeResponse findById(Long id) throws EntityNotFoundException {
         Notice notice = noticeRepository.findById(id).orElse(null);
         if (notice == null) {
             throw new EntityNotFoundException("Not found");
         }
         return NoticeMapper.toDto(notice);
     }
+
     public List<NoticeResponse> findAll() {
         List<Notice> listNotice = noticeRepository.findAll();
         return NoticeMapper.toDtoList(listNotice);
     }
 
-    public NoticeResponse update(NoticeUpdate noticeUpdate) {
+    public NoticeResponse update(NoticeUpdate noticeUpdate) throws EntityNotFoundException {
         Notice notice = noticeRepository.findById(noticeUpdate.getId()).orElse(null);
         if (notice == null) {
             throw new EntityNotFoundException("Not found");
@@ -47,7 +49,7 @@ public class NoticeService {
         return NoticeMapper.toDto(notice);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws EntityNotFoundException {
         boolean exists = noticeRepository.existsById(id);
         if (exists) {
             noticeRepository.deleteById(id);
