@@ -5,6 +5,7 @@ import dev.rivasjf.digitalbrain.Dto.Request.NoticeCreate;
 import dev.rivasjf.digitalbrain.Dto.Request.NoticeUpdate;
 import dev.rivasjf.digitalbrain.Dto.Response.NoticeResponse;
 import dev.rivasjf.digitalbrain.Service.NoticeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class NoticeController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<NoticeResponse>> registerNotice(@RequestBody NoticeCreate noticeCreate) {
+    public ResponseEntity<ApiResponse<NoticeResponse>> registerNotice(@Valid @RequestBody NoticeCreate noticeCreate) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(noticeService.save(noticeCreate), "Notice created"));
     }
 
@@ -33,7 +34,7 @@ public class NoticeController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<NoticeResponse>> updateNotice(@RequestBody NoticeUpdate noticeUpdate) {
+    public ResponseEntity<ApiResponse<NoticeResponse>> updateNotice(@Valid @RequestBody NoticeUpdate noticeUpdate) {
         return ResponseEntity.ok(ApiResponse.success(noticeService.update(noticeUpdate), "Notice updated"));
     }
 
