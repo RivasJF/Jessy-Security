@@ -1,6 +1,5 @@
-package dev.rivasjf.digitalbrain.Dto.Request;
+package dev.rivasjf.expensemanager.Dto.Request;
 
-import dev.rivasjf.digitalbrain.Entities.Notice;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

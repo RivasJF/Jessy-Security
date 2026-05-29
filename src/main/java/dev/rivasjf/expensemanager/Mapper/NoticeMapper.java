@@ -1,7 +1,7 @@
-package dev.rivasjf.digitalbrain.Mapper;
+package dev.rivasjf.expensemanager.Mapper;
 
-import dev.rivasjf.digitalbrain.Dto.Response.NoticeResponse;
-import dev.rivasjf.digitalbrain.Entities.Notice;
+import dev.rivasjf.expensemanager.Dto.Response.NoticeResponse;
+import dev.rivasjf.expensemanager.Entities.Notice;
 
 import java.util.List;
 

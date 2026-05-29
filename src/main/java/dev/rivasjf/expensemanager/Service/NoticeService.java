@@ -1,11 +1,11 @@
-package dev.rivasjf.digitalbrain.Service;
+package dev.rivasjf.expensemanager.Service;
 
-import dev.rivasjf.digitalbrain.Dto.Request.NoticeCreate;
-import dev.rivasjf.digitalbrain.Dto.Request.NoticeUpdate;
-import dev.rivasjf.digitalbrain.Dto.Response.NoticeResponse;
-import dev.rivasjf.digitalbrain.Entities.Notice;
-import dev.rivasjf.digitalbrain.Mapper.NoticeMapper;
-import dev.rivasjf.digitalbrain.Repositories.NoticeRepository;
+import dev.rivasjf.expensemanager.Dto.Request.NoticeCreate;
+import dev.rivasjf.expensemanager.Dto.Request.NoticeUpdate;
+import dev.rivasjf.expensemanager.Dto.Response.NoticeResponse;
+import dev.rivasjf.expensemanager.Entities.Notice;
+import dev.rivasjf.expensemanager.Mapper.NoticeMapper;
+import dev.rivasjf.expensemanager.Repositories.NoticeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

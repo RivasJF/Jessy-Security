@@ -1,6 +1,6 @@
-package dev.rivasjf.digitalbrain.Common.ExceptionHandler;
+package dev.rivasjf.expensemanager.Common.ExceptionHandler;
 
-import dev.rivasjf.digitalbrain.Common.Dto.ApiResponse;
+import dev.rivasjf.expensemanager.Common.Dto.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

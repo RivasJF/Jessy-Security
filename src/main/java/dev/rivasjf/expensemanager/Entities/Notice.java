@@ -1,4 +1,4 @@
-package dev.rivasjf.digitalbrain.Entities;
+package dev.rivasjf.expensemanager.Entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

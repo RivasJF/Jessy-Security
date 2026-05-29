@@ -1,4 +1,4 @@
-package dev.rivasjf.digitalbrain.Controller;
+package dev.rivasjf.expensemanager.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

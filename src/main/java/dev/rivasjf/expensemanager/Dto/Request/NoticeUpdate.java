@@ -1,4 +1,4 @@
-package dev.rivasjf.digitalbrain.Dto.Request;
+package dev.rivasjf.expensemanager.Dto.Request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

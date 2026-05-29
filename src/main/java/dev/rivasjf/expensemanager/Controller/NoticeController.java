@@ -1,10 +1,10 @@
-package dev.rivasjf.digitalbrain.Controller;
+package dev.rivasjf.expensemanager.Controller;
 
-import dev.rivasjf.digitalbrain.Common.Dto.ApiResponse;
-import dev.rivasjf.digitalbrain.Dto.Request.NoticeCreate;
-import dev.rivasjf.digitalbrain.Dto.Request.NoticeUpdate;
-import dev.rivasjf.digitalbrain.Dto.Response.NoticeResponse;
-import dev.rivasjf.digitalbrain.Service.NoticeService;
+import dev.rivasjf.expensemanager.Common.Dto.ApiResponse;
+import dev.rivasjf.expensemanager.Dto.Request.NoticeCreate;
+import dev.rivasjf.expensemanager.Dto.Request.NoticeUpdate;
+import dev.rivasjf.expensemanager.Dto.Response.NoticeResponse;
+import dev.rivasjf.expensemanager.Service.NoticeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

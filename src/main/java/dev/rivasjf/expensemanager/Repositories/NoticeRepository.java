@@ -1,6 +1,6 @@
-package dev.rivasjf.digitalbrain.Repositories;
+package dev.rivasjf.expensemanager.Repositories;
 
-import dev.rivasjf.digitalbrain.Entities.Notice;
+import dev.rivasjf.expensemanager.Entities.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

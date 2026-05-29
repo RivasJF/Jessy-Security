@@ -1,4 +1,4 @@
-package dev.rivasjf.digitalbrain.Dto.Response;
+package dev.rivasjf.expensemanager.Dto.Response;
 
 import lombok.Builder;
 

@@ -1,4 +1,4 @@
-package dev.rivasjf.digitalbrain.Configuration;
+package dev.rivasjf.expensemanager.Configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
