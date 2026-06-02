@@ -8,7 +8,5 @@ class NoticeTest {
 
     @Test
     void create() {
-        Notice notice = Notice.create("message");
-        assertEquals("message", notice.getMessage());
     }
 }

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Digital Brain
+    name: Expense Manager
   datasource:
     url: jdbc:postgresql://localhost:5432/node_db
     username: postgres
