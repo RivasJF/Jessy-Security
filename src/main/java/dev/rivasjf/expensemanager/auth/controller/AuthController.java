@@ -6,10 +6,8 @@ import dev.rivasjf.expensemanager.auth.dto.LoginRequestDto;
 import dev.rivasjf.expensemanager.auth.dto.UserRegisterRequestDto;
 import dev.rivasjf.expensemanager.auth.services.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,6 +27,12 @@ public class AuthController {
     @PostMapping("/login")
     public ApiResponse<JwtResponse> login(@Valid @RequestBody LoginRequestDto request) {
         return ApiResponse.success(this.authService.login(request),null);
+    }
+
+    @PostMapping("/refresh")
+    public ApiResponse<JwtResponse> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
+        return ApiResponse.success(this.authService.refresh(header),null);
+
     }
 
 }

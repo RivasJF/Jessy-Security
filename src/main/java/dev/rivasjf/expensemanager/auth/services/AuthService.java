@@ -62,4 +62,26 @@ public class AuthService {
                 .refresh_token(refreshToken)
                 .build();
     }
+
+    public JwtResponse refresh(String header) {
+        if (header == null || !header.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Header invalid");
+        }
+
+        String token = header.substring(7);
+        String userEmail = this.jwtService.extractUsername(token);
+
+        User user = this.userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (!this.jwtService.isTokenValid(token, user)) {
+            throw new IllegalArgumentException("Token invalid");
+        }
+
+        String accessToken = jwtService.generateToken(user);
+        return JwtResponse.builder()
+                .access_token(accessToken)
+                .refresh_token(token)
+                .build();
+    }
 }
