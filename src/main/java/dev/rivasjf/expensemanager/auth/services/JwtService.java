@@ -4,6 +4,7 @@ import dev.rivasjf.expensemanager.Entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -36,17 +37,28 @@ public class JwtService {
     }
 
     public String extractUsername(String token){
-        Claims jwtToken = Jwts.parser()
-                .verifyWith(this.getSingSecretKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-        return jwtToken.getSubject();
+        try {
+            Claims jwtToken = Jwts.parser()
+                    .verifyWith(this.getSingSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return jwtToken.getSubject();
+        } catch (io.jsonwebtoken.JwtException e) {
+            // Token is invalid or expired — return null so caller can handle it gracefully
+            return null;
+        }
     }
 
     public boolean isTokenValid(String token, User user){
         String username = this.extractUsername(token);
+        if (username == null) return false;
         return (username.equals(user.getEmail())) && !this.isTokenExpired(token);
+    }
+    public boolean isTokenValid(String token, UserDetails user){
+        String username = this.extractUsername(token);
+        if (username == null) return false;
+        return (username.equals(user.getUsername())) && !this.isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token){
