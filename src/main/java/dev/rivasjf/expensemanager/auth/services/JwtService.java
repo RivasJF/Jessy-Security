@@ -45,7 +45,6 @@ public class JwtService {
                     .getPayload();
             return jwtToken.getSubject();
         } catch (io.jsonwebtoken.JwtException e) {
-            // Token is invalid or expired — return null so caller can handle it gracefully
             return null;
         }
     }
@@ -62,12 +61,16 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token){
-        Claims jwtToken = Jwts.parser()
-                .verifyWith(this.getSingSecretKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-        return jwtToken.getExpiration().before(new Date());
+        try {
+            Claims jwtToken = Jwts.parser()
+                    .verifyWith(this.getSingSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return jwtToken.getExpiration().before(new Date());
+        } catch (io.jsonwebtoken.JwtException e) {
+            return true;
+        }
     }
 
     private SecretKey getSingSecretKey(){
