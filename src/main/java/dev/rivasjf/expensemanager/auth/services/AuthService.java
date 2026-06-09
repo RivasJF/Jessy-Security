@@ -5,6 +5,10 @@ import dev.rivasjf.expensemanager.Repositories.UserRepository;
 import dev.rivasjf.expensemanager.auth.dto.JwtResponse;
 import dev.rivasjf.expensemanager.auth.dto.LoginRequestDto;
 import dev.rivasjf.expensemanager.auth.dto.UserRegisterRequestDto;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +16,14 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(UserRepository userRepository, JwtService jwtService) {
+    public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     public JwtResponse register(UserRegisterRequestDto request) {
@@ -23,10 +31,11 @@ public class AuthService {
         if (existEmailUser) {
             throw new IllegalArgumentException("Email invalid");
         }
+        String encodedPassword = passwordEncoder.encode(User.validPassword(request.password()));
         User newUser = User.create(
                 request.username(),
                 request.email(),
-                request.password()
+                encodedPassword
         );
         User saveUser = this.userRepository.save(newUser);
         String token = jwtService.generateToken(saveUser);
@@ -38,6 +47,19 @@ public class AuthService {
     }
 
     public JwtResponse login(LoginRequestDto request) {
-        return null;
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.email(),
+                        request.password()
+                )
+        );
+        User user = this.userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        String token = jwtService.generateToken(user);
+        String refreshToken = jwtService.refreshToken(user);
+        return JwtResponse.builder()
+                .access_token(token)
+                .refresh_token(refreshToken)
+                .build();
     }
 }

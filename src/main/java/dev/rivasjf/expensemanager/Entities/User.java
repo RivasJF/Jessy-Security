@@ -31,7 +31,7 @@ public class User {
     private User(String username, String email, String password) {
         this.username = this.validUsername(username);
         this.email = this.validEmail(email);
-        this.passwordHash = this.validPassword(password);
+        this.passwordHash = password;
     }
 
     public static User create(String username, String email, String password) {
@@ -62,7 +62,7 @@ public class User {
         return email;
     }
 
-    private String validPassword(String password) {
+    public static String validPassword(String password) {
         Objects.requireNonNull(password, "Password cannot be null");
         password = password.trim();
         if (password.length() < 6 || password.length() > 30) {
