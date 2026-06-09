@@ -1,4 +1,4 @@
-package dev.rivasjf.expensemanager.Dto.Request;
+package dev.rivasjf.expensemanager.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

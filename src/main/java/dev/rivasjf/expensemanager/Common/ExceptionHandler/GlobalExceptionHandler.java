@@ -22,4 +22,10 @@ public class GlobalExceptionHandler {
         ApiResponse<Void> response = ApiResponse.error(ex.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(Exception ex) {
+        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }

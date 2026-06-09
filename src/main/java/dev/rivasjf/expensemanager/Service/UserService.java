@@ -1,6 +1,5 @@
 package dev.rivasjf.expensemanager.Service;
 
-import dev.rivasjf.expensemanager.Dto.Request.UserRegisterRequestDto;
 import dev.rivasjf.expensemanager.Dto.Response.UserResponseDto;
 import dev.rivasjf.expensemanager.Entities.User;
 import dev.rivasjf.expensemanager.Mapper.UserMapper;
@@ -17,21 +16,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public UserResponseDto registerUser(UserRegisterRequestDto request) {
-        Boolean existEmailUser = userRepository.existsByEmail(request.email());
-        if (existEmailUser) {
-            throw new IllegalArgumentException("Email invalid");
-        }
-        User newUser = User.create(
-                request.username(),
-                request.email(),
-                request.password()
-        );
-
-        this.userRepository.save(newUser);
-        return UserMapper.toDto(newUser);
     }
 
     public UserResponseDto getUserByEmail(String email) {
