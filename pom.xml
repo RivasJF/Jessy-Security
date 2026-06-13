@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dev.rivasjf</groupId>
-    <artifactId>ExpenseManager</artifactId>
+    <artifactId>JessySecurity</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <name>Expense Manager</name>
-    <description>ExpenseManager</description>
+    <description>JessySecurity</description>
     <url/>
     <licenses>
         <license/>

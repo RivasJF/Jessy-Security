@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Expense Manager
+    name: Jessy Security
   datasource:
     url: jdbc:postgresql://localhost:5432/node_db
     username: postgres
