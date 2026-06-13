@@ -1,12 +1,8 @@
-package dev.rivasjf.jessysecurity.user.dto.response;
+package dev.rivasjf.jessysecurity.user.dto.response
 
-import lombok.Builder;
-
-@Builder
-public record UserResponseDto (
-        String id,
-        String username,
-        String email,
-        String createdAt
-) {
-}
+data class UserResponseDto(
+    val id: String,
+    val username: String,
+    val email: String,
+    val createdAt: String
+)
