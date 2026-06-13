@@ -1,6 +1,6 @@
 package dev.rivasjf.expensemanager.auth.controller;
 
-import dev.rivasjf.expensemanager.Common.Dto.ApiResponse;
+import dev.rivasjf.expensemanager.common.Dto.ApiResponse;
 import dev.rivasjf.expensemanager.auth.dto.JwtResponse;
 import dev.rivasjf.expensemanager.auth.dto.LoginRequestDto;
 import dev.rivasjf.expensemanager.auth.dto.UserRegisterRequestDto;

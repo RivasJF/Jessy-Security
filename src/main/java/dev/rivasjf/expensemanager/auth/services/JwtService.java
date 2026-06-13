@@ -1,6 +1,6 @@
 package dev.rivasjf.expensemanager.auth.services;
 
-import dev.rivasjf.expensemanager.Entities.User;
+import dev.rivasjf.expensemanager.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

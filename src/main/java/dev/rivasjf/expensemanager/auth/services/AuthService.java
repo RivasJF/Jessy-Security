@@ -1,7 +1,7 @@
 package dev.rivasjf.expensemanager.auth.services;
 
-import dev.rivasjf.expensemanager.Entities.User;
-import dev.rivasjf.expensemanager.Repositories.UserRepository;
+import dev.rivasjf.expensemanager.user.entity.User;
+import dev.rivasjf.expensemanager.user.repository.UserRepository;
 import dev.rivasjf.expensemanager.auth.dto.JwtResponse;
 import dev.rivasjf.expensemanager.auth.dto.LoginRequestDto;
 import dev.rivasjf.expensemanager.auth.dto.UserRegisterRequestDto;

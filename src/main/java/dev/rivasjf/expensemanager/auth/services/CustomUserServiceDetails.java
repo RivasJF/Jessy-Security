@@ -1,7 +1,7 @@
 package dev.rivasjf.expensemanager.auth.services;
 
-import dev.rivasjf.expensemanager.Entities.User;
-import dev.rivasjf.expensemanager.Repositories.UserRepository;
+import dev.rivasjf.expensemanager.user.entity.User;
+import dev.rivasjf.expensemanager.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
