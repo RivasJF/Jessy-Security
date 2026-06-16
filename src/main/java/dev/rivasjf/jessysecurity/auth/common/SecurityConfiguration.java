@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -27,6 +27,11 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        int SALT_LENGTH = 16;
+        int HASH_LENGTH = 32;
+        int PARALLELISM = 1;
+        int MEMORY = 1 << 14;
+        int ITERATIONS = 2;
+        return new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, ITERATIONS, MEMORY, PARALLELISM);
     }
 }
