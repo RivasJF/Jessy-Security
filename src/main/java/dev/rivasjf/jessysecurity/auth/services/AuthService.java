@@ -35,7 +35,8 @@ public class AuthService {
         User newUser = User.create(
                 request.username(),
                 request.email(),
-                encodedPassword
+                encodedPassword,
+                request.salt()
         );
         User saveUser = this.userRepository.save(newUser);
         String token = jwtService.generateToken(saveUser);

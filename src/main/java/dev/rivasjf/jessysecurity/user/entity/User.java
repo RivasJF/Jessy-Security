@@ -22,20 +22,23 @@ public class User {
     private String email;
     @Column(name = "password_hash",  length = 255,  nullable = false)
     private String passwordHash;
+    @Column(name = "salt_public", length = 255, nullable = false)
+    private String saltPublic;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     protected User() {}
 
-    private User(String username, String email, String password) {
+    private User(String username, String email, String password, String saltPublic) {
         this.username = this.validUsername(username);
         this.email = this.validEmail(email);
         this.passwordHash = password;
+        this.saltPublic = saltPublic;
     }
 
-    public static User create(String username, String email, String password) {
-        return new User(username, email, password);
+    public static User create(String username, String email, String password, String saltPublic) {
+        return new User(username, email, password, saltPublic);
     }
 
     public void changeUsername(String username) {
@@ -46,7 +49,7 @@ public class User {
         Objects.requireNonNull(username, "Username cannot be null");
         username = username.trim();
         if (username.length() < 3 || username.length() > 30) {
-            throw new IllegalArgumentException("Username must be between 3 and 20 characters");
+            throw new IllegalArgumentException("Username must be between 3 and 30 characters");
         }
         return username.trim();
     }
@@ -66,7 +69,7 @@ public class User {
         Objects.requireNonNull(password, "Password cannot be null");
         password = password.trim();
         if (password.length() < 6 || password.length() > 30) {
-            throw new IllegalArgumentException("Password must be between 8 and 16 characters");
+            throw new IllegalArgumentException("Password must be between 8 and 30 characters");
         }
         return password;
     }

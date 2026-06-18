@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-@Entity @Table(name = "transaction_types")
+@Table(name = "transaction_types")
 public class TransactionType {
     @Id
     @Column(nullable = false, updatable = false)

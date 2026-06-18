@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Getter
-@Entity @Table(name = "transactions")
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @Column(nullable = false, updatable = false)
