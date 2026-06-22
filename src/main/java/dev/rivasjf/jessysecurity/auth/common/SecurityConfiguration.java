@@ -29,9 +29,9 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         int SALT_LENGTH = 16;
         int HASH_LENGTH = 32;
-        int PARALLELISM = 1;
+        int PARALLELISM = 4;
         int MEMORY = 1 << 14;
-        int ITERATIONS = 2;
+        int ITERATIONS = 3;
         return new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, ITERATIONS, MEMORY, PARALLELISM);
     }
 }
