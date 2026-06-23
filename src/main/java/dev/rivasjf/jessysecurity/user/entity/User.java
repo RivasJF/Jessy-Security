@@ -22,23 +22,23 @@ public class User {
     private String email;
     @Column(name = "password_hash",  length = 255,  nullable = false)
     private String passwordHash;
-    @Column(name = "salt_public", length = 255, nullable = false)
-    private String saltPublic;
+    @Column(name = "public_salt", length = 255, nullable = false)
+    private String publicSalt;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     protected User() {}
 
-    private User(String username, String email, String password, String saltPublic) {
+    private User(String username, String email, String password, String publicSalt) {
         this.username = this.validUsername(username);
         this.email = this.validEmail(email);
         this.passwordHash = password;
-        this.saltPublic = saltPublic;
+        this.publicSalt = publicSalt;
     }
 
-    public static User create(String username, String email, String password, String saltPublic) {
-        return new User(username, email, password, saltPublic);
+    public static User create(String username, String email, String password, String publicSalt) {
+        return new User(username, email, password, publicSalt);
     }
 
     public void changeUsername(String username) {

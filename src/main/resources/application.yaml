@@ -2,7 +2,7 @@ spring:
   application:
     name: Jessy Security
   datasource:
-    url: jdbc:postgresql://localhost:5432/node_db
+    url: jdbc:postgresql://localhost:5432/jessy_security_db
     username: postgres
     password: password
   jpa:

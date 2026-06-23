@@ -4,7 +4,7 @@ CREATE TABLE users
     username      VARCHAR(30)                    NOT NULL,
     email         VARCHAR(100)                   NOT NULL,
     password_hash VARCHAR(255)                   NOT NULL,
-    salt_public   VARCHAR(255)                   NOT NULL,
+    public_salt   VARCHAR(255)                   NOT NULL,
     created_at    TIMESTAMPTZ                    NOT NULL,
     CONSTRAINT pk_users PRIMARY KEY (id),
     CONSTRAINT pk_email UNIQUE (email)

@@ -14,10 +14,9 @@ public record UserRegisterRequestDto (
         String email,
 
         @NotEmpty(message = "Password cannot be empty")
-        @Size(min = 6, max = 30, message = "Password must be between 6 and 30 characters")
-        String password,
+        String publicKey,
 
-        @NotEmpty(message = "Salt cannot be empty")
-        String salt
+        @NotEmpty(message = "Public salt cannot be empty")
+        String publicSalt
 ) {
 }

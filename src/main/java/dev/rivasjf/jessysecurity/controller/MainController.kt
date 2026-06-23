@@ -8,7 +8,7 @@ import kotlin.time.Clock
 @RestController
 class MainController {
 
-    @GetMapping()
+    @GetMapping("/")
     fun home(): String {
         return "Hello, World!"
     }
