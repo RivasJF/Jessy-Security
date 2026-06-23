@@ -31,7 +31,7 @@ public class AuthService {
         if (existEmailUser) {
             throw new IllegalArgumentException("Email invalid");
         }
-        String encodedPassword = passwordEncoder.encode(User.validPassword(request.publicKey()));
+        String encodedPassword = passwordEncoder.encode(request.publicKey());
         User newUser = User.create(
                 request.username(),
                 request.email(),

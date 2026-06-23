@@ -65,13 +65,5 @@ public class User {
         return email;
     }
 
-    public static String validPassword(String password) {
-        Objects.requireNonNull(password, "Password cannot be null");
-        password = password.trim();
-        if (password.length() < 6 || password.length() > 30) {
-            throw new IllegalArgumentException("Password must be between 8 and 30 characters");
-        }
-        return password;
-    }
 
 }
