@@ -31,12 +31,12 @@ public class AuthService {
         if (existEmailUser) {
             throw new IllegalArgumentException("Email invalid");
         }
-        String encodedPassword = passwordEncoder.encode(User.validPassword(request.password()));
+        String encodedPassword = passwordEncoder.encode(User.validPassword(request.publicKey()));
         User newUser = User.create(
                 request.username(),
                 request.email(),
                 encodedPassword,
-                request.salt()
+                request.publicSalt()
         );
         User saveUser = this.userRepository.save(newUser);
         String token = jwtService.generateToken(saveUser);
