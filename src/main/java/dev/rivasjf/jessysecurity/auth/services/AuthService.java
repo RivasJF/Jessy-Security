@@ -66,12 +66,7 @@ public class AuthService {
                 .build();
     }
 
-    public JwtResponse refresh(String header) {
-        if (header == null || !header.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Header invalid");
-        }
-
-        String token = header.substring(7);
+    public JwtResponse refresh(String token) {
         String userEmail = this.jwtService.extractUsername(token);
 
         User user = this.userRepository.findByEmail(userEmail)

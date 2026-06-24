@@ -8,6 +8,8 @@ import dev.rivasjf.jessysecurity.auth.dto.UserRegisterRequestDto;
 import dev.rivasjf.jessysecurity.auth.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,19 +23,46 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<JwtResponse> register(@Valid @RequestBody UserRegisterRequestDto request) {
-        return ApiResponse.success(this.authService.register(request),null);
+    public ResponseEntity<ApiResponse<JwtResponse>> register(@Valid @RequestBody UserRegisterRequestDto request) {
+        JwtResponse jwtResponse = authService.register(request);
+        ResponseCookie refreshTokenCOOKIE = ResponseCookie.from("refreshToken", jwtResponse.refresh_token())
+                .httpOnly(true)
+                //.secure(true) production with HTTPS
+                .path("/api/auth/refresh") // solo la da para este path
+                .maxAge(7 * 24 * 60 * 60) // 7 days
+                .sameSite("Strict") // contra CSRF
+                .build();
+        ApiResponse<JwtResponse> response = ApiResponse.success(jwtResponse,null);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCOOKIE.toString())
+                .body(response);
     }
 
     @PostMapping("/login")
-    public ApiResponse<JwtResponse> login(@Valid @RequestBody LoginRequestDto request) {
-        return ApiResponse.success(this.authService.login(request),null);
+    public ResponseEntity<ApiResponse<JwtResponse>> login(@Valid @RequestBody LoginRequestDto request) {
+        JwtResponse jwtResponse = this.authService.login(request);
+
+        ResponseCookie refreshTokenCOOKIE = ResponseCookie.from("refreshToken", jwtResponse.refresh_token())
+                .httpOnly(true)
+                //.secure(true) production with HTTPS
+                .path("/api/auth/refresh") // solo la da para este path
+                .maxAge(7 * 24 * 60 * 60) // 7 days
+                .sameSite("Strict") // contra CSRF
+                .build();
+
+        ApiResponse<JwtResponse> response = ApiResponse.success(jwtResponse,null);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCOOKIE.toString())
+                .body(response);
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<JwtResponse> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
-        return ApiResponse.success(this.authService.refresh(header),null);
-
+    public ResponseEntity<ApiResponse<?>> refreshToken(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
+        if (refreshToken == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Refresh token is missing", null));
+        }
+        ApiResponse<JwtResponse> response = ApiResponse.success(this.authService.refresh(refreshToken),null);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/salt/{email}")
