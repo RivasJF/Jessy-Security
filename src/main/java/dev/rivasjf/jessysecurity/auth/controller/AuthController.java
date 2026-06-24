@@ -1,5 +1,6 @@
 package dev.rivasjf.jessysecurity.auth.controller;
 
+import dev.rivasjf.jessysecurity.auth.dto.SaltResponseDto;
 import dev.rivasjf.jessysecurity.common.Dto.ApiResponse;
 import dev.rivasjf.jessysecurity.auth.dto.JwtResponse;
 import dev.rivasjf.jessysecurity.auth.dto.LoginRequestDto;
@@ -33,6 +34,11 @@ public class AuthController {
     public ApiResponse<JwtResponse> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
         return ApiResponse.success(this.authService.refresh(header),null);
 
+    }
+
+    @GetMapping("/salt/{email}")
+    public ApiResponse<SaltResponseDto> getSalt(@PathVariable String email) {
+        return ApiResponse.success(this.authService.saltByEmail(email),null);
     }
 
 }

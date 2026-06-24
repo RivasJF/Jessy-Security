@@ -1,10 +1,12 @@
 package dev.rivasjf.jessysecurity.auth.services;
 
+import dev.rivasjf.jessysecurity.auth.dto.SaltResponseDto;
 import dev.rivasjf.jessysecurity.user.entity.User;
 import dev.rivasjf.jessysecurity.user.repository.UserRepository;
 import dev.rivasjf.jessysecurity.auth.dto.JwtResponse;
 import dev.rivasjf.jessysecurity.auth.dto.LoginRequestDto;
 import dev.rivasjf.jessysecurity.auth.dto.UserRegisterRequestDto;
+import dev.rivasjf.jessysecurity.utils.ValidateEmail;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,7 +53,7 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
-                        request.password()
+                        request.publicKey()
                 )
         );
         User user = this.userRepository.findByEmail(request.email())
@@ -83,6 +85,16 @@ public class AuthService {
         return JwtResponse.builder()
                 .access_token(accessToken)
                 .refresh_token(token)
+                .build();
+    }
+
+    public SaltResponseDto saltByEmail(String email) {
+        String userEmail = ValidateEmail.validateEmail(email);
+        User user = this.userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return SaltResponseDto.builder()
+                .email(user.getEmail())
+                .salt(user.getPublicSalt())
                 .build();
     }
 }
