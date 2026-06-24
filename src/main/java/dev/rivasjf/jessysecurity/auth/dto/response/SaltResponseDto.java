@@ -1,4 +1,4 @@
-package dev.rivasjf.jessysecurity.auth.dto;
+package dev.rivasjf.jessysecurity.auth.dto.response;
 
 import lombok.Builder;
 

@@ -1,11 +1,11 @@
 package dev.rivasjf.jessysecurity.auth.services;
 
-import dev.rivasjf.jessysecurity.auth.dto.SaltResponseDto;
+import dev.rivasjf.jessysecurity.auth.dto.*;
+import dev.rivasjf.jessysecurity.auth.dto.request.LoginRequestDto;
+import dev.rivasjf.jessysecurity.auth.dto.request.UserRegisterRequestDto;
+import dev.rivasjf.jessysecurity.auth.dto.response.SaltResponseDto;
 import dev.rivasjf.jessysecurity.user.entity.User;
 import dev.rivasjf.jessysecurity.user.repository.UserRepository;
-import dev.rivasjf.jessysecurity.auth.dto.JwtResponse;
-import dev.rivasjf.jessysecurity.auth.dto.LoginRequestDto;
-import dev.rivasjf.jessysecurity.auth.dto.UserRegisterRequestDto;
 import dev.rivasjf.jessysecurity.utils.ValidateEmail;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +28,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public JwtResponse register(UserRegisterRequestDto request) {
+    public AuthenticationTokenDto register(UserRegisterRequestDto request) {
         Boolean existEmailUser = userRepository.existsByEmail(request.email());
         if (existEmailUser) {
             throw new IllegalArgumentException("Email invalid");
@@ -43,13 +43,13 @@ public class AuthService {
         User saveUser = this.userRepository.save(newUser);
         String token = jwtService.generateToken(saveUser);
         String refreshToken = jwtService.refreshToken(saveUser);
-        return JwtResponse.builder()
+        return AuthenticationTokenDto.builder()
                 .access_token(token)
                 .refresh_token(refreshToken)
                 .build();
     }
 
-    public JwtResponse login(LoginRequestDto request) {
+    public AuthenticationTokenDto login(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -60,13 +60,13 @@ public class AuthService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         String token = jwtService.generateToken(user);
         String refreshToken = jwtService.refreshToken(user);
-        return JwtResponse.builder()
+        return AuthenticationTokenDto.builder()
                 .access_token(token)
                 .refresh_token(refreshToken)
                 .build();
     }
 
-    public JwtResponse refresh(String token) {
+    public AuthenticationTokenDto refresh(String token) {
         String userEmail = this.jwtService.extractUsername(token);
 
         User user = this.userRepository.findByEmail(userEmail)
@@ -77,7 +77,7 @@ public class AuthService {
         }
 
         String accessToken = jwtService.generateToken(user);
-        return JwtResponse.builder()
+        return AuthenticationTokenDto.builder()
                 .access_token(accessToken)
                 .refresh_token(token)
                 .build();
