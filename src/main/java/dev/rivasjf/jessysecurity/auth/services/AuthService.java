@@ -9,6 +9,7 @@ import dev.rivasjf.jessysecurity.user.repository.UserRepository;
 import dev.rivasjf.jessysecurity.utils.ValidateEmail;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class AuthService {
                 )
         );
         User user = this.userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
         String token = jwtService.generateToken(user);
         String refreshToken = jwtService.refreshToken(user);
         return AuthenticationTokenDto.builder()
@@ -86,7 +87,7 @@ public class AuthService {
     public SaltResponseDto saltByEmail(String email) {
         String userEmail = ValidateEmail.validateEmail(email);
         User user = this.userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
         return SaltResponseDto.builder()
                 .email(user.getEmail())
                 .salt(user.getPublicSalt())
