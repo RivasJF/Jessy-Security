@@ -25,13 +25,14 @@ public class AdditionalInformation {
 
     protected AdditionalInformation() {}
 
-    private AdditionalInformation(AdditionalInformationType type, String value) {
+    private AdditionalInformation(Account account, AdditionalInformationType type, String value) {
+        this.account = account;
         this.type = type;
         this.value = value;
     }
 
-    public static AdditionalInformation create(AdditionalInformationType type, String value) {
-        return new AdditionalInformation(type, value);
+    public static AdditionalInformation create(Account account, AdditionalInformationType type, String value) {
+        return new AdditionalInformation(account, type, value);
     }
 
     public Long getId() {

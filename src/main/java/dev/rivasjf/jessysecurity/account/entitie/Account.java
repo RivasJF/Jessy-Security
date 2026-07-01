@@ -50,9 +50,12 @@ public class Account {
             String title,
             String username,
             String description,
-            CategoryAccount category,
-            List<AdditionalInformation> additionalInformation) {
-        return new Account(user, title, username, description, category, additionalInformation);
+            CategoryAccount category) {
+        return new Account(user, title, username, description, category, null);
+    }
+
+    public void addAdditionalInformation(List<AdditionalInformation> additionalInformation) {
+        this.additionalInformation = additionalInformation;
     }
 
     public UUID getId() {

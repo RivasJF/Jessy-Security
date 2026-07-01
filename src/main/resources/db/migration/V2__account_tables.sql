@@ -1,7 +1,7 @@
 
 
 CREATE TABLE accounts (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT uuidv7() NOT NULL,
     user_id uuid NOT NULL,
     title VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL,

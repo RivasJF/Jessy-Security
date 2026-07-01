@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-    id            uuid DEFAULT gen_random_uuid() NOT NULL,
+    id            uuid DEFAULT uuidv7() NOT NULL,
     username      VARCHAR(30)                    NOT NULL,
     email         VARCHAR(100)                   NOT NULL,
     password_hash VARCHAR(255)                   NOT NULL,

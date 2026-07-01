@@ -28,17 +28,17 @@ public class AccountService {
     public AccountResponseDto registerAccount(String userEmail, AccountRegisterRequestDto requestDto) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        List<AdditionalInformation> additionalInformationsList = requestDto.additionalInformation().stream()
-                .map(info -> AdditionalInformation.create(info.type(), info.value()))
-                .toList();
         Account account = Account.create(
                 user,
                 requestDto.title(),
                 requestDto.username(),
                 requestDto.description(),
-                requestDto.category(),
-                additionalInformationsList
+                requestDto.category()
         );
+        List<AdditionalInformation> additionalInformationsList = requestDto.additionalInformation().stream()
+                .map(info -> AdditionalInformation.create(account, info.type(), info.value()))
+                .toList();
+        account.addAdditionalInformation(additionalInformationsList);
 
         Account saveAccount = accountRepository.save(account);
         return AccountMapper.toDto(saveAccount);
