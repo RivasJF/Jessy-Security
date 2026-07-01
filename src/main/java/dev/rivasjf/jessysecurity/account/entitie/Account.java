@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-@Entity()
+@Entity
 @Table(name = "accounts")
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,4 +45,41 @@ public class Account {
         this.additionalInformation = additionalInformation;
     }
 
+    public static Account create(
+            User user,
+            String title,
+            String username,
+            String description,
+            CategoryAccount category,
+            List<AdditionalInformation> additionalInformation) {
+        return new Account(user, title, username, description, category, additionalInformation);
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public List<AdditionalInformation> getAdditionalInformation() {
+        return additionalInformation;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public CategoryAccount getCategory() {
+        return category;
+    }
 }

@@ -49,6 +49,19 @@ public class JwtService {
         }
     }
 
+    public String extractId(String token) {
+        try {
+            Claims jwtToken = Jwts.parser()
+                    .verifyWith(this.getSingSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return jwtToken.getId();
+        } catch (io.jsonwebtoken.JwtException e) {
+            return null;
+        }
+    }
+
     public boolean isTokenValid(String token, User user){
         String username = this.extractUsername(token);
         if (username == null) return false;

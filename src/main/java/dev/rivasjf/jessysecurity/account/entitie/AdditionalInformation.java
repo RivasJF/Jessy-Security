@@ -1,11 +1,17 @@
 package dev.rivasjf.jessysecurity.account.entitie;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
-@Entity()
+import java.util.List;
+
+@Entity
 @Table(name = "account_additional_information")
 public class AdditionalInformation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -19,10 +25,13 @@ public class AdditionalInformation {
 
     protected AdditionalInformation() {}
 
-    private AdditionalInformation(Account account, AdditionalInformationType type, String value) {
-        this.account = account;
+    private AdditionalInformation(AdditionalInformationType type, String value) {
         this.type = type;
         this.value = value;
+    }
+
+    public static AdditionalInformation create(AdditionalInformationType type, String value) {
+        return new AdditionalInformation(type, value);
     }
 
     public Long getId() {
