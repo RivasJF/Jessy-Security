@@ -1,6 +1,7 @@
 package dev.rivasjf.jessysecurity.account.service;
 
 import dev.rivasjf.jessysecurity.account.dto.request.AccountRegisterRequestDto;
+import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.entitie.Account;
 import dev.rivasjf.jessysecurity.account.entitie.AdditionalInformation;
@@ -44,8 +45,18 @@ public class AccountService {
         return AccountMapper.toDto(saveAccount);
     }
 
+    public List<AccountListResponseDto> getUserAccounts(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        List<Account> accounts = accountRepository.findAllByUserId(user.getId());
+        return accounts.stream().map(AccountMapper::toListDto).toList();
+    }
+
     public AccountResponseDto getAccount(UUID id) {
-        return null;
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
+        return AccountMapper.toDto(account);
     }
 
     public void deleteAccount(UUID id) {

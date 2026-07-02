@@ -1,6 +1,7 @@
 package dev.rivasjf.jessysecurity.account.mapper;
 
 import dev.rivasjf.jessysecurity.account.dto.response.AccountAdditionalInformationResponseDto;
+import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.entitie.Account;
 import dev.rivasjf.jessysecurity.account.entitie.AdditionalInformation;
@@ -31,4 +32,15 @@ public class AccountMapper {
                 .map(AccountMapper::toDto)
                 .toList();
     }
+
+    public static AccountListResponseDto toListDto(Account account) {
+        return AccountListResponseDto.builder()
+                .id(account.getId().toString())
+                .title(account.getTitle())
+                .username(account.getUsername())
+                .description(account.getDescription())
+                .category(account.getCategory().toString())
+                .build();
+    }
+
 }
