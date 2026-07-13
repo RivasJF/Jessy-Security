@@ -1,6 +1,7 @@
 CREATE TABLE users
 (
-    id            uuid DEFAULT uuidv7() NOT NULL,
+    id            BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
+    public_id     uuid  NOT NULL,
     username      VARCHAR(30)                    NOT NULL,
     email         VARCHAR(100)                   NOT NULL,
     password_hash VARCHAR(255)                   NOT NULL,

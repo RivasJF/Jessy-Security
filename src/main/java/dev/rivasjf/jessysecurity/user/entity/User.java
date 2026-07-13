@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -15,7 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private UUID id;
+    private Long id;
+    @Column(name = "public_id", nullable = false, updatable = false)
+    private UUID publicId;
     @Column(name = "username", length = 30, nullable = false)
     private String username;
     @Column(name = "email", length = 100, nullable = false, unique = true)
@@ -35,6 +38,13 @@ public class User {
         this.email = this.validEmail(email);
         this.passwordHash = password;
         this.publicSalt = publicSalt;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
+        }
     }
 
     public static User create(String username, String email, String password, String publicSalt) {

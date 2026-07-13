@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public UserResponseDto getUserById(String id) {
-        User user = this.userRepository.findById(UUID.fromString(id))
+        User user = this.userRepository.findByPublicId(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return UserMapper.toDto(user);
     }

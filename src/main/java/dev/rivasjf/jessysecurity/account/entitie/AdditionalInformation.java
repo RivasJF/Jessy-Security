@@ -22,17 +22,20 @@ public class AdditionalInformation {
     private AdditionalInformationType type;
     @Column(name = "information_value",  nullable = false)
     private String value;
+    @Column(name = "information_key", nullable = false)
+    private String key;
 
     protected AdditionalInformation() {}
 
-    private AdditionalInformation(Account account, AdditionalInformationType type, String value) {
+    private AdditionalInformation(Account account, AdditionalInformationType type, String value,  String key) {
         this.account = account;
         this.type = type;
         this.value = value;
+        this.key = key;
     }
 
-    public static AdditionalInformation create(Account account, AdditionalInformationType type, String value) {
-        return new AdditionalInformation(account, type, value);
+    public static AdditionalInformation create(Account account, AdditionalInformationType type, String value, String key) {
+        return new AdditionalInformation(account, type, value, key);
     }
 
     public Long getId() {
@@ -49,5 +52,9 @@ public class AdditionalInformation {
 
     public AdditionalInformationType getType() {
         return type;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

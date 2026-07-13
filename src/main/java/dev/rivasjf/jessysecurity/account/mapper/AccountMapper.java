@@ -11,7 +11,7 @@ import java.util.List;
 public class AccountMapper {
     public static AccountResponseDto toDto(Account account) {
         return AccountResponseDto.builder()
-                .id(account.getId().toString())
+                .id(account.getPublicId().toString())
                 .title(account.getTitle())
                 .username(account.getUsername())
                 .description(account.getDescription())
@@ -24,6 +24,7 @@ public class AccountMapper {
         return AccountAdditionalInformationResponseDto.builder()
                 .type(additionalInformation.getType().toString())
                 .value(additionalInformation.getValue())
+                .key(additionalInformation.getKey())
                 .build();
     }
 
@@ -35,7 +36,7 @@ public class AccountMapper {
 
     public static AccountListResponseDto toListDto(Account account) {
         return AccountListResponseDto.builder()
-                .id(account.getId().toString())
+                .id(account.getPublicId().toString())
                 .title(account.getTitle())
                 .username(account.getUsername())
                 .description(account.getDescription())

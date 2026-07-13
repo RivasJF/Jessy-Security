@@ -9,7 +9,7 @@ public class UserMapper {
 
     public static UserResponseDto toDto(User user) {
         return new UserResponseDto(
-                user.getId().toString(),
+                user.getPublicId().toString(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getCreatedAt().toString()

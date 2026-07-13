@@ -5,6 +5,7 @@ import lombok.Builder;
 @Builder
 public record AccountAdditionalInformationResponseDto(
         String type,
-        String value
+        String value,
+        String key
 ) {
 }

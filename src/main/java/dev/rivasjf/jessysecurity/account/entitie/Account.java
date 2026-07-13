@@ -12,7 +12,9 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    private UUID id;
+    private Long id;
+    @Column(name = "public_id", nullable = false, updatable = false)
+    private UUID publicId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private User user;
@@ -29,6 +31,13 @@ public class Account {
     private List<AdditionalInformation> additionalInformation;
 
     protected Account(){}
+
+    @PrePersist
+    private void prePersist() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
+        }
+    }
 
     private Account(
             User user,
@@ -58,8 +67,12 @@ public class Account {
         this.additionalInformation = additionalInformation;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
     }
 
     public List<AdditionalInformation> getAdditionalInformation() {

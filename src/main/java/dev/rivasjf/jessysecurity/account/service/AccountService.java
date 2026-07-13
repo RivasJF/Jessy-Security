@@ -37,7 +37,7 @@ public class AccountService {
                 requestDto.category()
         );
         List<AdditionalInformation> additionalInformationsList = requestDto.additionalInformation().stream()
-                .map(info -> AdditionalInformation.create(account, info.type(), info.value()))
+                .map(info -> AdditionalInformation.create(account, info.type(), info.value(), info.key()))
                 .toList();
         account.addAdditionalInformation(additionalInformationsList);
 
@@ -54,7 +54,7 @@ public class AccountService {
     }
 
     public AccountResponseDto getAccount(UUID id) {
-        Account account = accountRepository.findById(id)
+        Account account = accountRepository.findByPublicId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
         return AccountMapper.toDto(account);
     }
