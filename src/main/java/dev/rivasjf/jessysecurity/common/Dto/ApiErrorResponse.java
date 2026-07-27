@@ -3,7 +3,8 @@ package dev.rivasjf.jessysecurity.common.Dto;
 import lombok.Builder;
 
 @Builder
-public record ApiErrorResponse (
-    Object details
-){
+public record ApiErrorResponse(
+        String message,
+        Object details
+) {
 }

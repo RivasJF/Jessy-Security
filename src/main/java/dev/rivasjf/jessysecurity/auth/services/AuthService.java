@@ -8,6 +8,8 @@ import dev.rivasjf.jessysecurity.user.entity.User;
 import dev.rivasjf.jessysecurity.user.repository.UserRepository;
 import dev.rivasjf.jessysecurity.utils.ValidateEmail;
 import jakarta.persistence.EntityNotFoundException;
+import org.jspecify.annotations.NonNull;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -91,6 +93,16 @@ public class AuthService {
         return SaltResponseDto.builder()
                 .email(user.getEmail())
                 .salt(user.getPublicSalt())
+                .build();
+    }
+
+    public @NonNull ResponseCookie createResponseCookie(String token) {
+        return ResponseCookie.from("refreshToken", token)
+                .httpOnly(true)
+                //.secure(true) production with HTTPS
+                .path("/api/auth/refresh") // solo la da para este path
+                .maxAge(7 * 24 * 60 * 60) // 7 days
+                .sameSite("Strict") // contra CSRF
                 .build();
     }
 }

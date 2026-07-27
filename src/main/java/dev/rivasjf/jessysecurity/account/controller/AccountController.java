@@ -5,6 +5,8 @@ import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.service.AccountService;
 import dev.rivasjf.jessysecurity.common.Dto.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -22,21 +24,21 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<AccountResponseDto> registerAccount(
+    public ResponseEntity<AccountResponseDto> registerAccount(
             @RequestBody AccountRegisterRequestDto requestDto,
             @AuthenticationPrincipal UserDetails userDetails) {
-        return ApiResponse.success(this.accountService.registerAccount(userDetails.getUsername(), requestDto), null);
+        return ApiResponse.success(HttpStatus.CREATED, this.accountService.registerAccount(userDetails.getUsername(), requestDto));
     }
 
     @GetMapping("/list")
-    public ApiResponse<List<AccountListResponseDto>> getUserAccounts(@AuthenticationPrincipal UserDetails userDetails) {
-        return ApiResponse.success(this.accountService.getUserAccounts(userDetails.getUsername()), null);
+    public ResponseEntity<List<AccountListResponseDto>> getUserAccounts(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.success(HttpStatus.OK, this.accountService.getUserAccounts(userDetails.getUsername()));
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<AccountResponseDto> getAccount(
+    public ResponseEntity<AccountResponseDto> getAccount(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable String id) {
-        return ApiResponse.success(this.accountService.getAccount(userDetails.getUsername(), id), null);
+        return ApiResponse.success(HttpStatus.OK, this.accountService.getAccount(userDetails.getUsername(), id));
     }
 }

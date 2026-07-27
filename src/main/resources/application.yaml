@@ -1,6 +1,8 @@
 spring:
   application:
     name: Jessy Security
+  jackson:
+    default-property-inclusion: non_null
   datasource:
     url: jdbc:postgresql://localhost:5432/jessy_security_db
     username: postgres
