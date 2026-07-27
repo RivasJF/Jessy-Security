@@ -53,8 +53,10 @@ public class AccountService {
         return accounts.stream().map(AccountMapper::toListDto).toList();
     }
 
-    public AccountResponseDto getAccount(UUID id) {
-        Account account = accountRepository.findByPublicId(id)
+    public AccountResponseDto getAccount(String userEmail, String id) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(
+                () -> new EntityNotFoundException("User not found"));
+        Account account = accountRepository.findByUserAndPublicId(user, UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
         return AccountMapper.toDto(account);
     }

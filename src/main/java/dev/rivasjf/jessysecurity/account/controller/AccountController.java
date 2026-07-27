@@ -5,7 +5,6 @@ import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.service.AccountService;
 import dev.rivasjf.jessysecurity.common.Dto.ApiResponse;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +31,12 @@ public class AccountController {
     @GetMapping("/list")
     public ApiResponse<List<AccountListResponseDto>> getUserAccounts(@AuthenticationPrincipal UserDetails userDetails) {
         return ApiResponse.success(this.accountService.getUserAccounts(userDetails.getUsername()), null);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<AccountResponseDto> getAccount(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable String id) {
+        return ApiResponse.success(this.accountService.getAccount(userDetails.getUsername(), id), null);
     }
 }
