@@ -15,6 +15,7 @@ CREATE TABLE accounts (
 
 CREATE TABLE account_additional_information (
     id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
+    public_id uuid NOT NULL,
     account_id BIGINT NOT NULL,
     information_type VARCHAR(100) NOT NULL,
     information_value VARCHAR(255) NOT NULL,

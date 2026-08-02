@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "account_additional_information")
@@ -14,6 +15,8 @@ public class AdditionalInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
+    @Column(name = "public_id", nullable = false, updatable = false)
+    private UUID publicId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Account account;
@@ -26,6 +29,13 @@ public class AdditionalInformation {
     private String key;
 
     protected AdditionalInformation() {}
+
+    @PrePersist
+    private void prePersist() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
+        }
+    }
 
     private AdditionalInformation(Account account, AdditionalInformationType type, String value,  String key) {
         this.account = account;
@@ -40,6 +50,10 @@ public class AdditionalInformation {
 
     public Long getId() {
         return id;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
     }
 
     public String getValue() {

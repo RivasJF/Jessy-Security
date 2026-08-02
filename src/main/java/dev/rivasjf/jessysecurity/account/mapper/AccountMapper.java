@@ -22,6 +22,7 @@ public class AccountMapper {
 
     public static AccountAdditionalInformationResponseDto toDto(AdditionalInformation additionalInformation) {
         return AccountAdditionalInformationResponseDto.builder()
+                .id(additionalInformation.getPublicId().toString())
                 .type(additionalInformation.getType().toString())
                 .value(additionalInformation.getValue())
                 .key(additionalInformation.getKey())
