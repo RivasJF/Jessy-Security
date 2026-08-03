@@ -178,4 +178,18 @@ public class AccountUpdateRequestDtoTest {
         assertEquals(1, violations.size());
     }
 
+    @Test
+    void withoutAdditionalInformation_noViolations() {
+        var dto = new AccountUpdateRequestDto(
+                "i1",
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA,
+                null
+        );
+        Set<ConstraintViolation<AccountUpdateRequestDto>> violations = validator.validate(dto);
+        assertTrue(violations.isEmpty());
+    }
+
 }

@@ -2,6 +2,7 @@ package dev.rivasjf.jessysecurity.account.service;
 
 import dev.rivasjf.jessysecurity.account.dto.AccountAdditionalInformationUpdateDto;
 import dev.rivasjf.jessysecurity.account.dto.AccountUpdateDto;
+import dev.rivasjf.jessysecurity.account.dto.request.AccountAdditionalInformationUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.request.AccountRegisterRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.request.AccountUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
@@ -15,8 +16,10 @@ import dev.rivasjf.jessysecurity.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class AccountService {
@@ -74,16 +77,7 @@ public class AccountService {
                 .username(requestDto.username())
                 .description(requestDto.description())
                 .category(requestDto.category())
-                .additionalInformation(requestDto.additionalInformation().stream()
-                        .map(
-                        info -> AccountAdditionalInformationUpdateDto.builder()
-                                .id(info.id())
-                                .deleted(info.deleted())
-                                .type(info.type())
-                                .value(info.value())
-                                .key(info.key())
-                                .build()
-                ).toList())
+                .additionalInformation(AccountMapper.toListDto(requestDto.additionalInformation()))
                 .build();
         account.updateAccount(updatedAccount);
         Account saveAccount = accountRepository.save(account);
@@ -92,4 +86,6 @@ public class AccountService {
 
     public void deleteAccount(UUID id) {
     }
+
+
 }

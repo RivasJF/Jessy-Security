@@ -1,11 +1,14 @@
 package dev.rivasjf.jessysecurity.account.mapper;
 
+import dev.rivasjf.jessysecurity.account.dto.AccountAdditionalInformationUpdateDto;
+import dev.rivasjf.jessysecurity.account.dto.request.AccountAdditionalInformationUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountAdditionalInformationResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.entitie.Account;
 import dev.rivasjf.jessysecurity.account.entitie.AdditionalInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountMapper {
@@ -43,6 +46,22 @@ public class AccountMapper {
                 .description(account.getDescription())
                 .category(account.getCategory().toString())
                 .build();
+    }
+
+    public static  List<AccountAdditionalInformationUpdateDto> toListDto (List<AccountAdditionalInformationUpdateRequestDto> additionalInformation) {
+        if (additionalInformation == null) {
+            return  new ArrayList<>();
+        }
+        return additionalInformation.stream()
+                .map(info -> AccountAdditionalInformationUpdateDto.builder()
+                        .id(info.id())
+                        .deleted(info.deleted())
+                        .type(info.type())
+                        .value(info.value())
+                        .key(info.key())
+                        .build())
+                .toList();
+
     }
 
 }

@@ -384,5 +384,76 @@ public class AccountServiceTest {
         assertEquals("321", account.additionalInformation().get(0).key());
     }
 
+    @Test
+    void updateAccountWithoutAdditionalInformation_ShouldReturn() {
+        UUID accountId = UUID.randomUUID();
+        UUID passwordInfoId = UUID.randomUUID();
+        UUID emailInfoId = UUID.randomUUID();
+
+        User fakeUser = User.create(
+                "jon",
+                "jon@gmail.com",
+                "123",
+                "321"
+        );
+
+        Account fakeAccount = Account.create(
+                fakeUser,
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA
+        );
+
+        ReflectionTestUtils.setField(fakeUser, "publicId", UUID.randomUUID());
+        ReflectionTestUtils.setField(fakeAccount, "publicId", accountId);
+
+        AdditionalInformation passwordInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.PASSWORD,
+                "1234",
+                "321"
+        );
+        AdditionalInformation emailInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.EMAIL,
+                "987",
+                "654"
+        );
+        ReflectionTestUtils.setField(passwordInfo, "publicId", passwordInfoId);
+        ReflectionTestUtils.setField(emailInfo, "publicId", emailInfoId);
+
+        List<AdditionalInformation> fakeAdditionalInfoList = new ArrayList<>();
+        fakeAdditionalInfoList.add(passwordInfo);
+        fakeAdditionalInfoList.add(emailInfo);
+        fakeAccount.addAdditionalInformation(fakeAdditionalInfoList);
+
+        when(userRepository.findByEmail("jon@gmail.com")).thenReturn(java.util.Optional.of(fakeUser));
+        when(accountRepository.findByUserAndPublicId(fakeUser, accountId)).thenReturn(java.util.Optional.of(fakeAccount));
+        when(accountRepository.save(fakeAccount)).thenReturn(fakeAccount);
+
+
+        var dto = new AccountUpdateRequestDto(
+                accountId.toString(),
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA,
+                null
+        );
+
+        AccountResponseDto account = accountService.updateAccount("jon@gmail.com", dto);
+
+        assertEquals(accountId.toString(), account.id());
+        assertEquals("AccountTest", account.title());
+        assertEquals("user@example.com", account.username());
+        assertEquals("This is a test account", account.description());
+        assertEquals("SOCIAL_MEDIA", account.category());
+        assertEquals(2, account.additionalInformation().size());
+        assertEquals("PASSWORD", account.additionalInformation().get(0).type());
+        assertEquals("1234", account.additionalInformation().get(0).value());
+        assertEquals("321", account.additionalInformation().get(0).key());
+    }
+
 
 }
