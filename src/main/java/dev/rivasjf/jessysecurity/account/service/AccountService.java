@@ -1,6 +1,9 @@
 package dev.rivasjf.jessysecurity.account.service;
 
+import dev.rivasjf.jessysecurity.account.dto.AccountAdditionalInformationUpdateDto;
+import dev.rivasjf.jessysecurity.account.dto.AccountUpdateDto;
 import dev.rivasjf.jessysecurity.account.dto.request.AccountRegisterRequestDto;
+import dev.rivasjf.jessysecurity.account.dto.request.AccountUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.entitie.Account;
@@ -59,6 +62,32 @@ public class AccountService {
         Account account = accountRepository.findByUserAndPublicId(user, UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
         return AccountMapper.toDto(account);
+    }
+
+    public AccountResponseDto updateAccount(String userEmail, AccountUpdateRequestDto requestDto) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Account account = accountRepository.findByUserAndPublicId(user, UUID.fromString(requestDto.id()))
+                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
+        var updatedAccount = AccountUpdateDto.builder()
+                .title(requestDto.title())
+                .username(requestDto.username())
+                .description(requestDto.description())
+                .category(requestDto.category())
+                .additionalInformation(requestDto.additionalInformation().stream()
+                        .map(
+                        info -> AccountAdditionalInformationUpdateDto.builder()
+                                .id(info.id())
+                                .deleted(info.deleted())
+                                .type(info.type())
+                                .value(info.value())
+                                .key(info.key())
+                                .build()
+                ).toList())
+                .build();
+        account.updateAccount(updatedAccount);
+        Account saveAccount = accountRepository.save(account);
+        return AccountMapper.toDto(saveAccount);
     }
 
     public void deleteAccount(UUID id) {

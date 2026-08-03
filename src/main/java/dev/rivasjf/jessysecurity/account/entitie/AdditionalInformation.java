@@ -48,6 +48,18 @@ public class AdditionalInformation {
         return new AdditionalInformation(account, type, value, key);
     }
 
+    public void updateInformation(AdditionalInformationType type, String value, String key) {
+        if (type != null) {
+            this.type = type;
+        }
+        if (value != null) {
+            this.value = value;
+        }
+        if (key != null) {
+            this.key = key;
+        }
+    }
+
     public Long getId() {
         return id;
     }

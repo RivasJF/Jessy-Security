@@ -1,8 +1,11 @@
 package dev.rivasjf.jessysecurity.account.entitie;
 
+import dev.rivasjf.jessysecurity.account.dto.AccountAdditionalInformationUpdateDto;
+import dev.rivasjf.jessysecurity.account.dto.AccountUpdateDto;
 import dev.rivasjf.jessysecurity.user.entity.User;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +68,47 @@ public class Account {
 
     public void addAdditionalInformation(List<AdditionalInformation> additionalInformation) {
         this.additionalInformation = additionalInformation;
+    }
+
+    public void updateAccount(AccountUpdateDto dto) {
+        this.updateInformation(dto.title(), dto.username(), dto.description(), dto.category());
+        this.updateAdditionalInformation(dto.additionalInformation());
+    }
+
+    private void updateInformation(String title, String username, String description, CategoryAccount category) {
+        if(title != null) {
+            this.title = title;
+        }
+        if (username != null) {
+            this.username = username;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+        if (category != null) {
+            this.category = category;
+        }
+    }
+
+    private void updateAdditionalInformation(List<AccountAdditionalInformationUpdateDto> additionalInformation) {
+        additionalInformation.stream()
+                .forEach(dto -> {
+
+                    if (dto.id() == null || dto.id().isEmpty()) {
+                        this.addAdditionalInformation(AdditionalInformation.create(this, dto.type(), dto.value(), dto.key()));
+                    } else if (dto.deleted() != null && dto.deleted()) {
+                        this.additionalInformation.removeIf(info -> info.getPublicId().toString().equals(dto.id()));
+                    } else if (dto.id() != null && !dto.id().isEmpty()) {
+                        var el = this.additionalInformation.stream().filter(info -> info.getPublicId().toString().equals(dto.id())).findFirst().orElse(null);
+                        if (el != null) {
+                            el.updateInformation(dto.type(), dto.value(), dto.key());
+                        }
+                    }
+                });
+    }
+
+    private void addAdditionalInformation (AdditionalInformation additionalInformation) {
+        this.additionalInformation.add(additionalInformation);
     }
 
     public Long getId() {

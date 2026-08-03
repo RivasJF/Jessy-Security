@@ -1,6 +1,7 @@
 package dev.rivasjf.jessysecurity.account.controller;
 
 import dev.rivasjf.jessysecurity.account.dto.request.AccountRegisterRequestDto;
+import dev.rivasjf.jessysecurity.account.dto.request.AccountUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountResponseDto;
 import dev.rivasjf.jessysecurity.account.service.AccountService;
@@ -40,5 +41,12 @@ public class AccountController {
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable String id) {
         return ApiResponse.success(HttpStatus.OK, this.accountService.getAccount(userDetails.getUsername(), id));
+    }
+
+    @PatchMapping()
+    public ResponseEntity<AccountResponseDto> updateAccount(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody AccountUpdateRequestDto requestDto) {
+        return ApiResponse.success(HttpStatus.OK, this.accountService.updateAccount(userDetails.getUsername(), requestDto));
     }
 }
