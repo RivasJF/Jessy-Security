@@ -49,4 +49,12 @@ public class AccountController {
             @RequestBody AccountUpdateRequestDto requestDto) {
         return ApiResponse.success(HttpStatus.OK, this.accountService.updateAccount(userDetails.getUsername(), requestDto));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteAccount(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable String id) {
+        this.accountService.deleteAccount(userDetails.getUsername(), id);
+        return ApiResponse.success(HttpStatus.NO_CONTENT, null);
+    }
 }

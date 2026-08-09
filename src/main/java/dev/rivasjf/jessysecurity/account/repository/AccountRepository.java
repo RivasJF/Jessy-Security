@@ -13,4 +13,5 @@ import java.util.UUID;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAllByUserId(Long userId);
     Optional<Account> findByUserAndPublicId(User user, UUID publicId);
+    Optional<Account> deleteByUserAndPublicId(User user, UUID publicId);
 }

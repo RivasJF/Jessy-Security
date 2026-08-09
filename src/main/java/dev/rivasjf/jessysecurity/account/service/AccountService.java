@@ -13,6 +13,7 @@ import dev.rivasjf.jessysecurity.user.entity.User;
 import dev.rivasjf.jessysecurity.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,12 @@ public class AccountService {
         return AccountMapper.toDto(saveAccount);
     }
 
-    public void deleteAccount(UUID id) {
+    @Transactional
+    public void deleteAccount(String userEmail, String id) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        accountRepository.deleteByUserAndPublicId(user, UUID.fromString(id))
+                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
     }
 
 
