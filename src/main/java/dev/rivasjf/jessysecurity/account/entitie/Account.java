@@ -93,18 +93,30 @@ public class Account {
     private void updateAdditionalInformation(List<AccountAdditionalInformationUpdateDto> additionalInformation) {
         additionalInformation.stream()
                 .forEach(dto -> {
-
                     if (dto.id() == null || dto.id().isEmpty()) {
                         this.addAdditionalInformation(AdditionalInformation.create(this, dto.type(), dto.value(), dto.key()));
                     } else if (dto.deleted() != null && dto.deleted()) {
-                        this.additionalInformation.removeIf(info -> info.getPublicId().toString().equals(dto.id()));
+                        this.removeAdditionalInformation(dto.id());
                     } else if (dto.id() != null && !dto.id().isEmpty()) {
-                        var el = this.additionalInformation.stream().filter(info -> info.getPublicId().toString().equals(dto.id())).findFirst().orElse(null);
-                        if (el != null) {
-                            el.updateInformation(dto.type(), dto.value(), dto.key());
-                        }
+                        this.updateAdditionalInformation(dto);
                     }
                 });
+    }
+
+    private void removeAdditionalInformation(String publicIdAdditionalInformation) {
+        AdditionalInformation additionalInformation = this.additionalInformation.stream()
+                .filter(info -> info.getPublicId().toString().equals(publicIdAdditionalInformation))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Additional information not found in the account"));
+        this.additionalInformation.remove(additionalInformation);
+    }
+
+    private void updateAdditionalInformation(AccountAdditionalInformationUpdateDto additionalInformationUpdateDto) {
+        AdditionalInformation additionalInformation = this.additionalInformation.stream()
+                .filter(info -> info.getPublicId().toString().equals(additionalInformationUpdateDto.id()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Additional information not found in the account"));
+        additionalInformation.updateInformation(additionalInformationUpdateDto.type(), additionalInformationUpdateDto.value(), additionalInformationUpdateDto.key());
     }
 
     private void addAdditionalInformation (AdditionalInformation additionalInformation) {

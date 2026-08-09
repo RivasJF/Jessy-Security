@@ -43,7 +43,7 @@ public class AccountController {
         return ApiResponse.success(HttpStatus.OK, this.accountService.getAccount(userDetails.getUsername(), id));
     }
 
-    @PatchMapping()
+    @PatchMapping("/update")
     public ResponseEntity<AccountResponseDto> updateAccount(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AccountUpdateRequestDto requestDto) {

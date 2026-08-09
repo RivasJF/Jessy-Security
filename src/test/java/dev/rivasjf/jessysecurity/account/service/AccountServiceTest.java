@@ -26,8 +26,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AccountServiceTest {
 
@@ -454,6 +455,162 @@ public class AccountServiceTest {
         assertEquals("1234", account.additionalInformation().get(0).value());
         assertEquals("321", account.additionalInformation().get(0).key());
     }
+
+    @Test
+    void updateAccountWithNull_ShouldReturn() {
+        UUID accountId = UUID.randomUUID();
+        UUID passwordInfoId = UUID.randomUUID();
+        UUID emailInfoId = UUID.randomUUID();
+
+        User fakeUser = User.create(
+                "jon",
+                "jon@gmail.com",
+                "123",
+                "321"
+        );
+
+        Account fakeAccount = Account.create(
+                fakeUser,
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA
+        );
+
+        ReflectionTestUtils.setField(fakeUser, "publicId", UUID.randomUUID());
+        ReflectionTestUtils.setField(fakeAccount, "publicId", accountId);
+
+        AdditionalInformation passwordInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.PASSWORD,
+                "1234",
+                "321"
+        );
+        AdditionalInformation emailInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.EMAIL,
+                "987",
+                "654"
+        );
+        ReflectionTestUtils.setField(passwordInfo, "publicId", passwordInfoId);
+        ReflectionTestUtils.setField(emailInfo, "publicId", emailInfoId);
+
+        List<AdditionalInformation> fakeAdditionalInfoList = new ArrayList<>();
+        fakeAdditionalInfoList.add(passwordInfo);
+        fakeAdditionalInfoList.add(emailInfo);
+        fakeAccount.addAdditionalInformation(fakeAdditionalInfoList);
+
+        when(userRepository.findByEmail("jon@gmail.com")).thenReturn(java.util.Optional.of(fakeUser));
+        when(accountRepository.findByUserAndPublicId(fakeUser, accountId)).thenReturn(java.util.Optional.of(fakeAccount));
+        when(accountRepository.save(fakeAccount)).thenReturn(fakeAccount);
+
+        List<AccountAdditionalInformationUpdateRequestDto> additionalInfoList = List.of(
+                new AccountAdditionalInformationUpdateRequestDto(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        );
+
+        var dto = new AccountUpdateRequestDto(
+                accountId.toString(),
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA,
+                additionalInfoList
+        );
+
+
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> accountService.updateAccount("jon@gmail.com", dto),
+                "Se esperaba un IllegalArgumentException pero no se lanzó"
+        );
+        verify(accountRepository, never()).save(any());
+    }
+
+    @Test
+    void updateAccountWithNullValues_ShouldReturn() {
+        UUID accountId = UUID.randomUUID();
+        UUID passwordInfoId = UUID.randomUUID();
+        UUID emailInfoId = UUID.randomUUID();
+
+        User fakeUser = User.create(
+                "jon",
+                "jon@gmail.com",
+                "123",
+                "321"
+        );
+
+        Account fakeAccount = Account.create(
+                fakeUser,
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA
+        );
+
+        ReflectionTestUtils.setField(fakeUser, "publicId", UUID.randomUUID());
+        ReflectionTestUtils.setField(fakeAccount, "publicId", accountId);
+
+        AdditionalInformation passwordInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.PASSWORD,
+                "1234",
+                "321"
+        );
+        AdditionalInformation emailInfo = AdditionalInformation.create(
+                fakeAccount,
+                AdditionalInformationType.EMAIL,
+                "987",
+                "654"
+        );
+        ReflectionTestUtils.setField(passwordInfo, "publicId", passwordInfoId);
+        ReflectionTestUtils.setField(emailInfo, "publicId", emailInfoId);
+
+        List<AdditionalInformation> fakeAdditionalInfoList = new ArrayList<>();
+        fakeAdditionalInfoList.add(passwordInfo);
+        fakeAdditionalInfoList.add(emailInfo);
+        fakeAccount.addAdditionalInformation(fakeAdditionalInfoList);
+
+        when(userRepository.findByEmail("jon@gmail.com")).thenReturn(java.util.Optional.of(fakeUser));
+        when(accountRepository.findByUserAndPublicId(fakeUser, accountId)).thenReturn(java.util.Optional.of(fakeAccount));
+        when(accountRepository.save(fakeAccount)).thenReturn(fakeAccount);
+
+        List<AccountAdditionalInformationUpdateRequestDto> additionalInfoList = List.of(
+                new AccountAdditionalInformationUpdateRequestDto(
+                        passwordInfoId.toString(),
+                        null,
+                        null,
+                        null,
+                        "new"
+                )
+        );
+
+        var dto = new AccountUpdateRequestDto(
+                accountId.toString(),
+                "AccountTest",
+                "user@example.com",
+                "This is a test account",
+                CategoryAccount.SOCIAL_MEDIA,
+                additionalInfoList
+        );
+
+
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> accountService.updateAccount("jon@gmail.com", dto),
+                "Se esperaba un IllegalArgumentException pero no se lanzó"
+        );
+        verify(accountRepository, never()).save(any());
+    }
+
+    
 
 
 }

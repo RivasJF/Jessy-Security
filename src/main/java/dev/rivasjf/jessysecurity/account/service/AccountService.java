@@ -1,8 +1,6 @@
 package dev.rivasjf.jessysecurity.account.service;
 
-import dev.rivasjf.jessysecurity.account.dto.AccountAdditionalInformationUpdateDto;
 import dev.rivasjf.jessysecurity.account.dto.AccountUpdateDto;
-import dev.rivasjf.jessysecurity.account.dto.request.AccountAdditionalInformationUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.request.AccountRegisterRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.request.AccountUpdateRequestDto;
 import dev.rivasjf.jessysecurity.account.dto.response.AccountListResponseDto;

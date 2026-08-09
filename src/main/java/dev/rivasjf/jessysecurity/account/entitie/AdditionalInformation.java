@@ -45,6 +45,18 @@ public class AdditionalInformation {
     }
 
     public static AdditionalInformation create(Account account, AdditionalInformationType type, String value, String key) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Type cannot be null");
+        }
+        if (value == null || value.isEmpty()) {
+            throw new IllegalArgumentException("Value cannot be null or empty");
+        }
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Key cannot be null or empty");
+        }
         return new AdditionalInformation(account, type, value, key);
     }
 
@@ -52,11 +64,15 @@ public class AdditionalInformation {
         if (type != null) {
             this.type = type;
         }
-        if (value != null) {
+        //cannot change value without key
+        if (key != null && value != null) {
             this.value = value;
-        }
-        if (key != null) {
             this.key = key;
+        }
+        if (key != null && value == null) {
+            throw new IllegalArgumentException("Key cannot be null or empty");
+        }else {
+            this.value = value;
         }
     }
 
