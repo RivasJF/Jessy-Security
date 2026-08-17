@@ -1,0 +1,40 @@
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: jessy-security-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_PS_USER}
+      POSTGRES_PASSWORD: ${DB_PS_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - jessy-security-data:/var/lib/postgresql/data
+    networks:
+        - jessy_net_network
+
+  api:
+    image: rivasjf/jessy-security:${IMAGE_TAG:-latest}
+    container_name: jessy-security-api
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_MIGRATION_USER: ${DB_MIGRATION_USER}
+      DB_MIGRATION_PASSWORD: ${DB_MIGRATION_PASSWORD}
+    ports:
+      - "3000:3000"
+    networks:
+      - jessy_net_network
+
+networks:
+  jessy_net_network:
+    name: jessy_network
+    driver: bridge
+
+volumes:
+    jessy-security-data:

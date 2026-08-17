@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -15,27 +16,39 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private UUID id;
+    private Long id;
+    @Column(name = "public_id", nullable = false, updatable = false)
+    private UUID publicId;
     @Column(name = "username", length = 30, nullable = false)
     private String username;
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
     @Column(name = "password_hash",  length = 255,  nullable = false)
     private String passwordHash;
+    @Column(name = "public_salt", length = 255, nullable = false)
+    private String publicSalt;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     protected User() {}
 
-    private User(String username, String email, String password) {
+    private User(String username, String email, String password, String publicSalt) {
         this.username = this.validUsername(username);
         this.email = this.validEmail(email);
         this.passwordHash = password;
+        this.publicSalt = publicSalt;
     }
 
-    public static User create(String username, String email, String password) {
-        return new User(username, email, password);
+    @PrePersist
+    private void prePersist() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
+        }
+    }
+
+    public static User create(String username, String email, String password, String publicSalt) {
+        return new User(username, email, password, publicSalt);
     }
 
     public void changeUsername(String username) {
@@ -46,7 +59,7 @@ public class User {
         Objects.requireNonNull(username, "Username cannot be null");
         username = username.trim();
         if (username.length() < 3 || username.length() > 30) {
-            throw new IllegalArgumentException("Username must be between 3 and 20 characters");
+            throw new IllegalArgumentException("Username must be between 3 and 30 characters");
         }
         return username.trim();
     }
@@ -62,13 +75,5 @@ public class User {
         return email;
     }
 
-    public static String validPassword(String password) {
-        Objects.requireNonNull(password, "Password cannot be null");
-        password = password.trim();
-        if (password.length() < 6 || password.length() > 30) {
-            throw new IllegalArgumentException("Password must be between 8 and 16 characters");
-        }
-        return password;
-    }
 
 }

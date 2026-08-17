@@ -1,15 +1,22 @@
 spring:
   application:
     name: Jessy Security
+  jackson:
+    default-property-inclusion: non_null
   datasource:
-    url: jdbc:postgresql://localhost:5432/node_db
-    username: postgres
-    password: password
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
   flyway:
+    url: ${DB_URL}
+    user: ${DB_MIGRATION_USER}
+    password: ${DB_MIGRATION_PASSWORD}
+    baseline-on-migrate: true
+    validate-on-migrate: true
     enabled: true
 
 
