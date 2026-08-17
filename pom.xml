@@ -10,7 +10,7 @@
     </parent>
     <groupId>dev.rivasjf</groupId>
     <artifactId>JessySecurity</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1</version>
     <name>Expense Manager</name>
     <description>JessySecurity</description>
     <url/>
